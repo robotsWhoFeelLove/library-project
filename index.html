@@ -16,13 +16,11 @@
         <div class="sidebar">Sidebar
             <!-- <button id="show-books">Show Books</button> -->
             <button class="sidebar-button hidden">Remove Book</button>
+            <label class="sidebar-check hidden">Mark as read<input type="checkbox" class="sidebar-check" id="update-read"></label>
         </div>
-        <div class="display">
-            <div class="console"></div>
-            
-        </div>
+        <div class="console"></div>    
         <div class="new-book">
-            <form onsubmit="event.preventDefault()">
+            <form class="" onsubmit="event.preventDefault()">
                 <input name="book" id="book" type="text">
                 <label for="book">Book</label>
                 <input name="author" id="author" type="text">
