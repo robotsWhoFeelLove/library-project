@@ -88,7 +88,7 @@ wrapper.addEventListener('click', (event) => {
     let selectedBook = document.createElement("div");
     selectedBook.classList.add("selected-book");
     selectedBook.textContent = document.getElementById(book).textContent;
-    document.getElementById(book).appendChild(selectedBook);
+    document.getElementById(book).prepend(selectedBook);
     document.querySelector(".sidebar-button").classList.toggle("hidden");
   }
 
