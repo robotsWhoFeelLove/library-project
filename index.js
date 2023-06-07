@@ -44,7 +44,7 @@ function showBooks (){
         myLibrary.forEach((book,i)=>{
         console.log(book.book+ ` interval: ${i}`)
         let card = document.createElement("div");
-        card.classList.add("card");
+        card.classList.add(`card-${Math.floor(Math.random()*3)+1}`);
         card.setAttribute("id",`index-${i}`);
        
         let cardTitle = document.createElement("div");
