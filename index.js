@@ -1,3 +1,6 @@
+let updaters = [document.querySelector(".sidebar-button"),document.querySelector(".sidebar-check")]
+let form = Array.from(document.querySelectorAll("form>*"));
+
 function getFormVars(){
     book = document.querySelector("#book");
     author = document.querySelector("#author");
@@ -77,10 +80,19 @@ let submitBook = document.querySelector("form button");
 
 let readCheck = document.querySelector("#update-read");
 
-readCheck.addEventListener("click",function(){console.log("checkbox clicked")
-    myLibrary[bookSelected.substring(6)].read = readCheck.checked;
-    saveBooks();
-})
+//Read Check?
+// readCheck.addEventListener("click",function(){console.log("checkbox clicked")
+//     myLibrary[bookSelected.substring(6)].read = readCheck.checked;
+//     saveBooks();
+// })
+
+document.querySelector(".add-book").addEventListener("click",(event)=>{
+toggleHidden(form);
+    console.log(event.target);})
+
+function toggleHidden(things){
+    things.forEach(thing=> thing.classList.toggle("hidden"))
+}
 
 const wrapper = document.querySelector(".console");
 let bookSelected;
@@ -91,7 +103,12 @@ wrapper.addEventListener('click', (event) => {
     console.log(`parentNode is ${event.target.parentNode.classList}`)
     let thisNode = event.target;
     let thisParent = event.target.parentNode
- 
+if(thisNode.classList == "read-button"){console.log("readButton pushed")
+    markAsRead()
+}
+if(thisNode.classList == "selected-button"){
+    removeBook()
+} 
 if(thisNode.classList == "console"){
         return;}
 if(document.querySelector(".selected-book") !== null){console.log(document.querySelector(".selected-book"));
@@ -99,7 +116,7 @@ if(document.querySelector(".selected-book") !== null){console.log(document.query
 }; 
 
 if(thisNode.classList == "selected-book" || thisParent.classList == "selected-book"){
-    hideThings(updaters);
+    // hideThings(updaters);
     return;}
 // if (event.target.classList.contains("selected-book")){
 //     document.querySelector(".selected-book").remove();
@@ -116,59 +133,80 @@ if ( thisParent.id.substring(0,5) === "index"){
     console.log(bookSelected)
     } 
 
-
-
 //   console.log(event.target.id)
 })
 
+
+
+// btnRemove.addEventListener("click",removeBook())
+function markAsRead(){console.log("markAsRead "+ myLibrary[bookSelected.substring(6)])
+    myLibrary[bookSelected.substring(6)].read = true 
+    saveBooks()      //myLibrary[bookSelected.substring(6)]
+}
+
+
   function showSelectedBook(book){
+    let bookObj = myLibrary[book.substring(6)]; console.log("Book obj is "+bookObj.book);
     let selectedBook = document.createElement("div");
     selectedBook.classList.add("selected-book");
     selectedBook.setAttribute("id",`selected-${book}`);
     // selectedBook.textContent = document.getElementById(book).textContent;
-    console.log(`bookSelected is ${bookSelected.substring(6)} and book is ${book}`);
+    // console.log(`bookSelected is ${bookSelected.substring(6)} and book is ${book}`);
     let title = document.createElement("div");
     title.classList.add("selected-title");
-    title.textContent = myLibrary[bookSelected.substring(6)].book;
+    title.textContent = bookObj.book //myLibrary[bookSelected.substring(6)].book;
 
     let author = document.createElement("div");
     author.classList.add("selected-author");
-    author.textContent = myLibrary[bookSelected.substring(6)].author;
+    author.textContent = bookObj.author   //myLibrary[bookSelected.substring(6)].author;
 
     let pages = document.createElement("div");
     pages.classList.add("selected-pages");
-    pages.textContent = myLibrary[bookSelected.substring(6)].pages;
+    pages.textContent = bookObj.pages  //myLibrary[bookSelected.substring(6)].pages;
 
-    console.log("isRead?" + myLibrary[bookSelected.substring(6)].read);
-    document.querySelector(".sidebar-check>input").checked = myLibrary[bookSelected.substring(6)].read;
+    // console.log("isRead?" + myLibrary[bookSelected.substring(6)].read);
+    // document.querySelector(".sidebar-check>input").checked = myLibrary[bookSelected.substring(6)].read  //myLibrary[bookSelected.substring(6)].read;
+
+    let btnRemove = document.createElement("Button");
+    btnRemove.classList.add("selected-button");
+    btnRemove.textContent = "Remove this Book from Library"
+ 
+    let checkRead = document.createElement("Button");
+    checkRead.classList.add("read-button");
+    checkRead.textContent = "Mark as Read";
 
     selectedBook.appendChild(title);
     selectedBook.appendChild(author);
     selectedBook.appendChild(pages);
+    selectedBook.appendChild(btnRemove);
+    
+    if(!bookObj.read){        //myLibrary[bookSelected.substring(6)].read){
+        selectedBook.appendChild(checkRead);  
+     }
 
     document.getElementById(book).prepend(selectedBook);
+
+    // document.querySelector(".selected-button").addEventListener("click",removeBook())
     // console.log(selectedBook.nextElementSibling);
     // title.textContent = selectedBook.nextElementSibling.textContent;
     // author.textContent = selectedBook.nextElementSibling.nextElementSibling.textContent;
     // document.querySelector(".sidebar-button").classList.toggle("hidden");
     // document.querySelector(".sidebar-check").classList.toggle("hidden");
     console.log("selected book is" +document.querySelector(".console .selected-book"));
-    if(document.querySelector(".console .selected-book") !== null){console.log("selected book is" +document.querySelector(".console .selected-book"))
-        showHidden(updaters)
-    } else {
-        hideThings(updaters)
-    }
+    // if(document.querySelector(".console .selected-book") !== null){console.log("selected book is" +document.querySelector(".console .selected-book"))
+    //     showHidden(updaters)
+    // } else {
+    //     hideThings(updaters)
+    // }
   }
 
-  document.querySelector(".sidebar-button").addEventListener("click",
     function removeBook(){myLibrary.splice(bookSelected.substring(6),1)
         document.querySelector(".selected-book").remove();
-        document.querySelector(".sidebar-button").classList.toggle("hidden");
+        // document.querySelector(".sidebar-button").classList.toggle("hidden");
         showBooks();
         saveBooks();
-    })
-let updaters = [document.querySelector(".sidebar-button"),document.querySelector(".sidebar-check")]
-let form = Array.from(document.querySelectorAll("form>*"));
+    }
+
 
 function showHidden(hiddenThings){
     hiddenThings.forEach(thing => thing.classList.remove("hidden"))
@@ -177,6 +215,8 @@ function showHidden(hiddenThings){
 function hideThings(things){
     things.forEach(thing => thing.classList.add("hidden"))
 }
+
+hideThings(form)
 
 
 
